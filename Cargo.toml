@@ -1,0 +1,18 @@
+[package]
+name = "environs"
+description = "Manage your environment variables with simplicity"
+authors = ["julien-cpsn"]
+version = "0.1.0"
+edition = "2021"
+keywords = ["env", "environment", "TUI", "ratatui"]
+
+[dependencies]
+crokey = "1.0.1"
+crossterm = "0.27.0"
+indexmap = { version = "2.2.6", features = ["rayon"] }
+ratatui = "0.26.3"
+rayon = "1.10.0"
+strum = "0.26.2"
+tokio = { version = "1.38.0", features = ["rt", "rt-multi-thread", "macros"] }
+tui-big-text = "0.4.4"
+
