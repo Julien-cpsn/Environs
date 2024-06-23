@@ -53,6 +53,9 @@ impl App {
                         key!(ctrl-c) | key!(q) => self.should_quit = true,
                         key!(esc) => self.main_menu(),
 
+                        key!(up) | key!(k) => self.env_values_list.previous(),
+                        key!(down) | key!(j) => self.env_values_list.next(),
+                        
                         _ => {}
                     },
                 }

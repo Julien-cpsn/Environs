@@ -2,7 +2,7 @@ use indexmap::IndexMap;
 use ratatui::Frame;
 use ratatui::layout::Rect;
 use ratatui::prelude::{Modifier, Style};
-use ratatui::prelude::Color::Blue;
+use ratatui::style::Color::DarkGray;
 use ratatui::style::Stylize;
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Borders, List};
@@ -15,20 +15,26 @@ use crate::models::env_variables::EnvVariable;
 use crate::models::modification_types::ModificationType;
 
 impl App {
-    pub(super) fn render_env_variables_list(&mut self, frame: &mut Frame, area: Rect) {
+    pub fn render_env_variables_list(&mut self, frame: &mut Frame, area: Rect) {
         let filtered_and_sorted_env_variables = filter_and_sort_env_variables(&mut self.env_variables, &mut self.env_variables_list.items, &self.env_variables_filter.text, &self.env_variables_sort);
 
+        let number_variables = filtered_and_sorted_env_variables.len();
+        let selection = match self.env_variables_list.state.selected() {
+            None => String::from("?"),
+            Some(selection) => (selection + 1).to_string()
+        };
+
         let mut env_block = Block::default()
-            .title("Variables")
+            .title(format!("—< Variables ({selection}/{number_variables}) >"))
             .borders(Borders::ALL);
 
-        if self.state == AppState::MainMenu {
-            env_block = env_block.fg(Blue);
+        if self.state != AppState::MainMenu {
+            env_block = env_block.fg(DarkGray);
         }
 
         let env_list = List::new(filtered_and_sorted_env_variables)
             .highlight_style(Style::default().add_modifier(Modifier::BOLD))
-            .highlight_symbol("> ")
+            .highlight_symbol(">")
             .block(env_block);
 
         frame.render_stateful_widget(env_list, area, &mut self.env_variables_list.state);
@@ -69,12 +75,13 @@ fn filter_and_sort_env_variables<'a>(env_variables: &IndexMap<String, EnvVariabl
 
     for key in items.iter() {
         let variable = local_env_variables[&key];
+        let key = format!(" {key}");
 
         let line = match variable.modification_type {
             ModificationType::None => Line::raw(key.clone()).white(),
-            ModificationType::Addition => Line::from(vec![Span::raw("+ "), Span::raw(key)]).white().on_light_green(),
-            ModificationType::Deletion => Line::from(vec![Span::raw("- "), Span::raw(key)]).white().on_light_red(),
-            ModificationType::Change => Line::from(vec![Span::raw("~ "), Span::raw(key)]).white().on_light_blue(),
+            ModificationType::Addition => Line::from(vec![Span::raw("+"), Span::raw(key)]).white().on_light_green(),
+            ModificationType::Deletion => Line::from(vec![Span::raw("﹘"), Span::raw(key)]).white().on_light_red(),
+            ModificationType::Change => Line::from(vec![Span::raw("~"), Span::raw(key)]).white().on_light_blue(),
         };
 
         lines.push(line)

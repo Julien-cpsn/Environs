@@ -46,12 +46,10 @@ impl App {
 
         self.render_env_variables_list(frame, inner_layout[0]);
 
-        match self.env_variables_list.selected {
+        match self.env_variables_list.selected.clone() {
             None => self.render_homepage(frame, inner_layout[1]),
             Some(selection) => {
-                let key = &self.env_variables_list.items[selection];
-                let environment_variable = self.env_variables.get(key).unwrap();
-                self.render_environment_variable(frame, inner_layout[1], key, environment_variable);
+                self.render_environment_variable(frame, inner_layout[1], selection);
             }
         }
 

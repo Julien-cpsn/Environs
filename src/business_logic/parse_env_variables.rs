@@ -4,17 +4,17 @@ use crate::models::env_values::EnvValue;
 use crate::models::env_variables::EnvVariable;
 use crate::models::modification_types::ModificationType;
 
+#[cfg(not(target_family = "windows"))]
+const ENV_SEPARATOR: &str = ":";
+#[cfg(target_family = "windows")]
+const ENV_SEPARATOR: &str = ";";
+
 pub fn parse_env_variables() -> IndexMap<String, EnvVariable> {
     let mut env_variables = IndexMap::new();
-
-    #[cfg(not(target_os = "windows"))]
-    let separator = ":";
-    #[cfg(target_os = "windows")]
-    let separator = ";";
     
     for (key, values) in env::vars() {
         let split_values: Vec<EnvValue> = values
-            .split(separator)
+            .split(ENV_SEPARATOR)
             .map(|value|
                 EnvValue {
                     original_value: value.to_string(),

@@ -22,7 +22,10 @@ pub struct App {
 
     pub env_variables_list: StatefulList<String>,
     pub env_variables_filter: TextInput,
-    pub env_variables_sort: SortMode
+    pub env_variables_sort: SortMode,
+
+    pub env_values_list: StatefulList<String>,
+
 }
 
 impl App {
@@ -38,6 +41,8 @@ impl App {
             env_variables_list: StatefulList::default(),
             env_variables_filter: TextInput::default(),
             env_variables_sort: SortMode::None,
+            
+            env_values_list: StatefulList::default(),
         }
     }
 
