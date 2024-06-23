@@ -23,7 +23,8 @@ impl App {
                     MainMenu => match key {
                         key!(ctrl-c) | key!(q) => self.should_quit = true,
 
-                        KeyCombination { codes: One(KeyCode::Char('/')), modifiers: KeyModifiers::NONE } => self.filter_env_variables(),
+                        KeyCombination { codes: One(KeyCode::Char('/')), modifiers: KeyModifiers::NONE } |
+                        KeyCombination { codes: One(KeyCode::Char('/')), modifiers: KeyModifiers::SHIFT } => self.filter_env_variables(),
                         key!(s) => self.env_variables_sort = next_sort_mode(&self.env_variables_sort),
                         
                         key!(up) | key!(k) => self.env_variables_list.previous(),

@@ -27,7 +27,7 @@ impl App {
         }
 
         let env_list = List::new(filtered_and_sorted_env_variables)
-            .highlight_style(Style::default().add_modifier(Modifier::BOLD).bg(Blue))
+            .highlight_style(Style::default().add_modifier(Modifier::BOLD))
             .highlight_symbol("> ")
             .block(env_block);
 

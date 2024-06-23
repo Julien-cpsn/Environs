@@ -7,9 +7,14 @@ use crate::models::modification_types::ModificationType;
 pub fn parse_env_variables() -> IndexMap<String, EnvVariable> {
     let mut env_variables = IndexMap::new();
 
+    #[cfg(not(target_os = "windows"))]
+    let separator = ":";
+    #[cfg(target_os = "windows")]
+    let separator = ";";
+    
     for (key, values) in env::vars() {
         let split_values: Vec<EnvValue> = values
-            .split(":")
+            .split(separator)
             .map(|value|
                 EnvValue {
                     original_value: value.to_string(),
