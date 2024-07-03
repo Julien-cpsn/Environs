@@ -49,7 +49,7 @@ impl App {
         match self.env_variables_list.selected.clone() {
             None => self.render_homepage(frame, inner_layout[1]),
             Some(selection) => {
-                self.render_environment_variable(frame, inner_layout[1], selection);
+                self.render_environment_values(frame, inner_layout[1], selection);
             }
         }
 

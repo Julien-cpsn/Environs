@@ -13,7 +13,10 @@ pub enum AppState {
     FilteringEnvVariables,
 
     #[strum(to_string = "Variable selected")]
-    EnvVariableSelected
+    EnvVariableSelected,
+
+    #[strum(to_string = "Editing value")]
+    EditingEnvValue
 }
 
 impl App {
@@ -45,6 +48,16 @@ impl App {
                     key.white().on_dark_gray()
                 ])
             }
+            EditingEnvValue => {
+                let (key, _) = self.env_variables.get_index(self.env_variables_list.selected.unwrap()).unwrap();
+                let key = key.clone();
+
+                Line::from(vec![
+                    format!("{} > ", EnvVariableSelected.to_string()).dark_gray(),
+                    key.white().on_dark_gray(),
+                    format!(" > {}", self.state.to_string()).white(),
+                ])
+            }
         }
     }
 
@@ -52,7 +65,8 @@ impl App {
         let available_keys = match self.state {
             MainMenu => vec!["Exit", "ctrl-c q", "Filter", "/", "Sort", "s", "Up", "up k", "Down", "down j"],
             FilteringEnvVariables => vec!["Quit", "esc", "Confirm", "enter"],
-            EnvVariableSelected => vec!["Exit", "ctrl-c q", "Quit", "esc"],
+            EnvVariableSelected => vec!["Exit", "ctrl-c q", "Quit", "esc", "Up", "up k", "Down", "down j"],
+            EditingEnvValue => vec!["Exit", "ctrl-c q", "Quit", "esc"]
         };
 
         let mut line = Line::default();

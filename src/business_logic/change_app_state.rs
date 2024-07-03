@@ -1,6 +1,7 @@
 use crate::app::App;
 use crate::app_state::AppState;
 use crate::app_state::AppState::FilteringEnvVariables;
+use crate::models::modification_types::ModificationType;
 
 impl App {
     pub fn homepage(&mut self) {
@@ -24,5 +25,14 @@ impl App {
 
         self.env_variables_list.select();
         self.state = AppState::EnvVariableSelected;
+    }
+
+    pub fn edit_env_value(&mut self) {
+        if self.env_values_list.state.selected().is_none() {
+            return;
+        }
+
+        self.env_values_list.select();
+        self.state = AppState::EditingEnvValue;
     }
 }

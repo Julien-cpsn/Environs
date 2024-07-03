@@ -1,7 +1,7 @@
 use ratatui::Frame;
 use ratatui::layout::{Constraint, Layout, Rect};
 use ratatui::layout::Direction::Vertical;
-use ratatui::prelude::{Modifier, Style};
+use ratatui::prelude::{Line, Modifier, Style};
 use ratatui::style::Color::DarkGray;
 use ratatui::style::Stylize;
 use ratatui::widgets::{Block, Borders, List, Paragraph};
@@ -9,9 +9,11 @@ use rayon::prelude::*;
 
 use crate::app::App;
 use crate::app_state::AppState;
+use crate::models::env_values::EnvValue;
+use crate::models::modification_types::ModificationType;
 
 impl App {
-    pub(super) fn render_environment_variable(&mut self, frame: &mut Frame, rect: Rect, selection: usize) {
+    pub fn render_environment_values(&mut self, frame: &mut Frame, rect: Rect, selection: usize) {
         let key = &self.env_variables_list.items[selection];
         let environment_variable = self.env_variables.get_mut(key).unwrap();
 
@@ -35,20 +37,15 @@ impl App {
 
         let mut environment_variable_name_paragraph = Paragraph::new(key.clone()).centered().white();
 
-        let values: Vec<String> = environment_variable.values
-            .par_iter()
-            .map(|value| value.value.clone())
-            .collect();
-
-        let number_values = values.len();
+        let mapped_values = map_env_values(&environment_variable.values, &mut self.env_values_list.items);
+        
+        let number_values = mapped_values.len();
         let selection = match self.env_values_list.state.selected() {
             None => String::from("?"),
             Some(selection) => (selection + 1).to_string()
         };
-
-        self.env_values_list.items = values.clone();
-
-        let mut environment_values_list = List::new(values)
+        
+        let mut environment_values_list = List::new(mapped_values)
             .highlight_style(Style::default().add_modifier(Modifier::BOLD))
             .highlight_symbol(">")
             .block(
@@ -65,4 +62,30 @@ impl App {
         frame.render_widget(environment_variable_name_paragraph, inner_layout[1]);
         frame.render_stateful_widget(environment_values_list, inner_layout[3], &mut self.env_values_list.state)
     }
+}
+
+fn map_env_values<'a>(env_values: &'a Vec<EnvValue>, items: &'a mut Vec<String>) -> Vec<Line<'a>> {
+    *items = env_values
+        .par_iter()
+        .map(|env_value| {
+            env_value.value.to_string()
+        })
+        .collect();
+
+    let mut lines: Vec<Line> = vec![];
+
+    for env_value in env_values {
+        let mut line = Line::raw(env_value.value.clone()).white();
+
+        line = match env_value.modification_type {
+            ModificationType::None => line,
+            ModificationType::Addition => line.on_light_green(),
+            ModificationType::Deletion => line.on_light_red(),
+            ModificationType::Change => line.on_light_blue(),
+        };
+
+        lines.push(line)
+    }
+
+    return lines;
 }

@@ -1,7 +1,7 @@
 use crokey::{key, KeyCombination};
 use crokey::OneToThree::One;
-use crossterm::event;
-use crossterm::event::{Event, KeyCode, KeyEventKind, KeyModifiers};
+use ratatui::crossterm::event;
+use ratatui::crossterm::event::{Event, KeyCode, KeyEventKind, KeyModifiers};
 use crate::app::App;
 use crate::app_state::AppState::*;
 use crate::business_logic::sort_env_variables::next_sort_mode;
@@ -47,7 +47,7 @@ impl App {
 
                         KeyCombination { codes: One(KeyCode::Char(char)), .. } => self.env_variables_filter.enter_char(char),
 
-                            _ => {}
+                        _ => {}
                     },
                     EnvVariableSelected => match key {
                         key!(ctrl-c) | key!(q) => self.should_quit = true,
@@ -55,9 +55,17 @@ impl App {
 
                         key!(up) | key!(k) => self.env_values_list.previous(),
                         key!(down) | key!(j) => self.env_values_list.next(),
-                        
+
+                        key!(enter) => self.edit_env_value(),
+
                         _ => {}
                     },
+                    EditingEnvValue => match key {
+                        key!(ctrl-c) | key!(q) => self.should_quit = true,
+                        key!(esc) => self.select_request(),
+
+                        _ => {}
+                    }
                 }
             }
         }

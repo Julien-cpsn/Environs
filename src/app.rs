@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use crossterm::terminal::disable_raw_mode;
+use ratatui::crossterm::terminal::disable_raw_mode;
 use indexmap::IndexMap;
 use ratatui::backend::Backend;
 use ratatui::Terminal;
