@@ -15,7 +15,7 @@ use crate::models::modification_types::ModificationType;
 impl App {
     pub fn render_environment_values(&mut self, frame: &mut Frame, rect: Rect, selection: usize) {
         let key = &self.env_variables_list.items[selection];
-        let environment_variable = self.env_variables.get_mut(key).unwrap();
+        let env_variable = self.env_variables.get(key).unwrap();
 
         let block = Block::new();
 
@@ -37,7 +37,7 @@ impl App {
 
         let mut environment_variable_name_paragraph = Paragraph::new(key.clone()).centered().white();
 
-        let mapped_values = map_env_values(&environment_variable.values, &mut self.env_values_list.items);
+        let mapped_values = map_env_values(&env_variable.values, &mut self.env_values_list.items);
         
         let number_values = mapped_values.len();
         let selection = match self.env_values_list.state.selected() {
@@ -60,7 +60,7 @@ impl App {
         }
 
         frame.render_widget(environment_variable_name_paragraph, inner_layout[1]);
-        frame.render_stateful_widget(environment_values_list, inner_layout[3], &mut self.env_values_list.state)
+        frame.render_stateful_widget(environment_values_list, inner_layout[3], &mut self.env_values_list.state);
     }
 }
 

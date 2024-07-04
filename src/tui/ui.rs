@@ -7,6 +7,7 @@ use ratatui::widgets::{Block, Borders};
 use ratatui::widgets::block::Title;
 
 use crate::app::App;
+use crate::app_state::AppState;
 
 impl App {
     pub fn render_ui(&mut self, frame: &mut Frame) {
@@ -46,10 +47,16 @@ impl App {
 
         self.render_env_variables_list(frame, inner_layout[0]);
 
-        match self.env_variables_list.selected.clone() {
+        match self.env_variables_list.selected {
             None => self.render_homepage(frame, inner_layout[1]),
-            Some(selection) => {
-                self.render_environment_values(frame, inner_layout[1], selection);
+            Some(env_variable_selection) => {
+                self.render_environment_values(frame, inner_layout[1], env_variable_selection);
+                
+                if let Some(env_value_selection) = self.env_values_list.selected {
+                    if self.state == AppState::EditingEnvValue {
+                        self.render_environment_value_popup(frame, env_variable_selection, env_value_selection);
+                    }
+                }
             }
         }
 

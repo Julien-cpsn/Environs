@@ -1,7 +1,6 @@
 use crate::app::App;
 use crate::app_state::AppState;
 use crate::app_state::AppState::FilteringEnvVariables;
-use crate::models::modification_types::ModificationType;
 
 impl App {
     pub fn homepage(&mut self) {
