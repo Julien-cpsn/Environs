@@ -5,6 +5,7 @@ use ratatui::crossterm::event::{Event, KeyCode, KeyEventKind, KeyModifiers};
 use crate::app::App;
 use crate::app_state::AppState::*;
 use crate::business_logic::sort_env_variables::next_sort_mode;
+use crate::models::env_value_tab::next_env_value_tab;
 
 impl App {
     pub async fn handle_events(&mut self) {
@@ -63,6 +64,8 @@ impl App {
                     EditingEnvValue => match key {
                         key!(ctrl-c) | key!(q) => self.should_quit = true,
                         key!(esc) => self.select_request(),
+                        
+                        key!(shift-backtab) => self.env_value_tab = next_env_value_tab(&self.env_value_tab),
 
                         _ => {}
                     }

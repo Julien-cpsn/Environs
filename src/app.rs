@@ -8,6 +8,7 @@ use ratatui::Terminal;
 use crate::app_state::AppState;
 use crate::business_logic::parse_env_variables::parse_env_variables;
 use crate::business_logic::sort_env_variables::SortMode;
+use crate::models::env_value_tab::EnvValueTab;
 use crate::models::env_variables::EnvVariable;
 use crate::utils::stateful_list::StatefulList;
 use crate::utils::text_input::TextInput;
@@ -25,7 +26,7 @@ pub struct App {
     pub env_variables_sort: SortMode,
 
     pub env_values_list: StatefulList<String>,
-
+    pub env_value_tab: EnvValueTab
 }
 
 impl App {
@@ -43,6 +44,7 @@ impl App {
             env_variables_sort: SortMode::None,
             
             env_values_list: StatefulList::default(),
+            env_value_tab: EnvValueTab::Both,
         }
     }
 

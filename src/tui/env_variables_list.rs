@@ -25,7 +25,7 @@ impl App {
         };
 
         let mut env_block = Block::default()
-            .title(format!("—< Variables ({selection}/{number_variables}) >"))
+            .title(format!("─< Variables ({selection}/{number_variables}) >"))
             .borders(Borders::ALL);
 
         if self.state != AppState::MainMenu {

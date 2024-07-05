@@ -50,7 +50,7 @@ impl App {
             .highlight_symbol(">")
             .block(
                 Block::default()
-                    .title(format!("—< Values ({selection}/{number_values}) >"))
+                    .title(format!("─< Values ({selection}/{number_values}) >"))
                     .borders(Borders::ALL)
             );
         
