@@ -1,3 +1,5 @@
+//#![feature(rustc_private)]
+
 mod app;
 mod app_state;
 mod utils;
