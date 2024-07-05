@@ -256,12 +256,9 @@ version = "0.1.0"
 dependencies = [
  "crokey",
  "indexmap",
- "mio",
- "num_cpus",
+ "libc",
  "ratatui",
  "rayon",
- "signal-hook-mio",
- "signal-hook-registry",
  "strum",
  "tokio",
  "tui-big-text",

@@ -16,10 +16,8 @@ tokio = { version = "1.38.0", features = ["rt", "rt-multi-thread", "macros"] }
 tui-big-text = "0.4.5"
 
 # Is it utile?
-num_cpus = "1.16.0"
-signal-hook-registry = "1.4.2"
-signal-hook-mio = { version = "0.2.3", features = ["mio-0_8"] }
-mio = { version = "0.8.11", features = ["os-poll"] }
+libc = "0.2.155"
+#backtrace = { version = "0.3.73", features = ["libunwind"] }
 
 [package.metadata.rust-analyzer]
 # This package uses rustc crates.
