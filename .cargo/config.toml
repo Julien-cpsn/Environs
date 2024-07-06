@@ -2,6 +2,8 @@
 build-std-features = [""]
 build-std = ["panic_abort", "std", "libc"]
 
+[build]
+
 [profile.dev]
 panic = "abort"
 opt-level = "s"

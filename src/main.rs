@@ -1,6 +1,4 @@
 #![feature(rustc_private)]
-#[macro_use]
-pub extern crate libc;
 
 mod app;
 mod app_state;

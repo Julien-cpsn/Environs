@@ -256,7 +256,6 @@ version = "0.1.0"
 dependencies = [
  "crokey",
  "indexmap",
- "libc",
  "ratatui",
  "rayon",
  "strum",
